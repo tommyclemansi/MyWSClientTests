@@ -1,0 +1,183 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>tcleyman</groupId>
+	<artifactId>tcleyman_JMS_CLIENT</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>tcleyman_JMS_CLIENT</name>
+
+	<properties>
+		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<wls_admin>t3://127.0.0.1:7003</wls_admin>
+		<wls_user>weblogic</wls_user>
+		<!-- below is a property that must be passed from the outside -->
+		<wls_password>${tcleyman.WLSPassword}</wls_password>	
+		<wls_dir>C:\PRODUCTS\WLS1213</wls_dir>
+		<wls_version>12.1.3-0-0</wls_version>
+		<!-- specify below what the host of the WLS is where the WS is deployed -->
+		<wsdl_host>http://localhost:7001</wsdl_host>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.oracle.weblogic</groupId>
+			<artifactId>weblogic-maven-plugin</artifactId>
+			<version>12.1.3-0-0</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+					<compilerArguments>
+						<endorseddirs>${endorsed.dir}</endorseddirs>
+					</compilerArguments>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${endorsed.dir}</outputDirectory>
+							<silent>true</silent>
+							<artifactItems>
+								<artifactItem>
+									<groupId>javax</groupId>
+									<artifactId>javaee-endorsed-api</artifactId>
+									<version>6.0</version>
+									<type>jar</type>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+
+
+
+				</executions>
+			</plugin>
+			<plugin>
+				<!-- This is the configuration for the weblogic-maven-plugin -->
+				<groupId>com.oracle.weblogic</groupId>
+				<artifactId>weblogic-maven-plugin</artifactId>
+				<version>${wls_version}</version>
+				<configuration>
+					<middlewareHome>${wls_dir}</middlewareHome>
+				</configuration>
+				<executions>
+					<!-- first for normal transport -->
+					<!-- http://docs.oracle.com/middleware/1212/wls/WLPRG/maven.htm#WLPRG734 -->
+					<execution>
+						<id>clientgentom1</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>ws-clientgen</goal>
+						</goals>
+						<configuration>
+							<debug>true</debug>
+							<!-- where to store source code -->
+							<destDir>src/main/java</destDir>
+							<!-- unfortunately this does not generate the right annotations.. -->
+							<jmstransportclient>
+								<messageType>com.oracle.webservices.api.jms.JMSMessageType.TEXT</messageType>
+							</jmstransportclient>
+							<packageName>Httpcode</packageName>
+							<verbose>true</verbose>
+							<!-- when deployed this should be the default location -->
+							<wsdl>${wsdl_host}/MyJMSWS/MyJMSWSService?WSDL</wsdl>
+						</configuration>
+					</execution>
+					
+					<execution>
+						<id>clientgentom2</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>ws-clientgen</goal>
+						</goals>
+						<configuration>
+							<debug>true</debug>
+							<!-- where to store source code -->
+							<destDir>src/main/java</destDir>
+							<!-- unfortunately this does not generate the right annotations.. -->
+							<jmstransportclient>
+								<messageType>com.oracle.webservices.api.jms.JMSMessageType.TEXT</messageType>
+							</jmstransportclient>
+							<packageName>Jmscode</packageName>
+							<verbose>true</verbose>
+							<!-- when deployed this should be the default location -->
+							<wsdl>${wsdl_host}/MyJMSWS_JMS/MyJMSWS?WSDL</wsdl>
+						</configuration>
+					</execution>
+
+					<execution>
+						<id>wls-undeploy_jms</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>undeploy</goal>
+						</goals>
+						<configuration>
+							<adminurl>${wls_admin}</adminurl>
+							<user>${wls_user}</user>
+							<password>${wls_password}</password>
+							<source>${project.build.directory}/${project.build.finalName}.war</source>
+							<targets>AdminServer</targets>
+							<verbose>true</verbose>
+							<failOnError>false</failOnError>
+							<name>${project.build.finalName}</name>
+						</configuration>
+					</execution>
+					<execution>
+						<id>wls-deploy</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+						<configuration>
+							<adminurl>${wls_admin}</adminurl>
+							<user>${wls_user}</user>
+							<password>${wls_password}</password>
+							<source>${project.build.directory}/${project.build.finalName}.war</source>
+							<targets>AdminServer</targets>
+							<verbose>true</verbose>
+							<name>${project.build.finalName}</name>
+							<upload>true</upload>
+						</configuration>
+					</execution>
+
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
