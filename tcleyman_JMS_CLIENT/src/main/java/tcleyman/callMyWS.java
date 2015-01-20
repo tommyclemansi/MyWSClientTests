@@ -4,6 +4,7 @@
 package tcleyman;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ import com.oracle.webservices.api.jms.JMSTransportClientFeature;
 
 //import Jmscode.MyJMSWS;
 //import Jmscode.MyJMSWSService;
+
 
 import java.util.logging.Logger;
 import java.util.logging.Level;
@@ -47,10 +49,7 @@ public class callMyWS extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		logger.log(Level.INFO, "trying HTTP:");
-		processHTTPRequest(request, response);
-		logger.log(Level.INFO, "trying JMS:");
-		processRequest(request, response);
+		processRequest(request,response);
 	}
 
 	/**
@@ -60,25 +59,46 @@ public class callMyWS extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		processRequest(request,response);
+
+	}
+	
+	protected void processRequest(HttpServletRequest request,
+			HttpServletResponse response)
+			{
+		try{
+		PrintWriter pw = response.getWriter();
 		logger.log(Level.INFO, "trying HTTP:");
+		pw.println("result of calling HTTP method: " + processHTTPRequest(request, response));
 		processHTTPRequest(request, response);
 		logger.log(Level.INFO, "trying JMS:");
-		processRequest(request, response);
-	}
+		pw.println("result of calling JMS method: " + processJMSRequest(request, response));	
+		pw.println("in case one of them is failed, please see the console of the WLS.. ");
+		}catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+			}
 
-	protected void processHTTPRequest(HttpServletRequest request,
+	protected String processHTTPRequest(HttpServletRequest request,
 			HttpServletResponse response) { /*
 											 * This will call the Http
 											 * WebService.. in package Httpcode
 											 */
+		String result="failed";
 		try {
 			Httpcode.MyJMSWSService service = new Httpcode.MyJMSWSService();
+			
 			Object myport = service.getMyJMSWSPort();
+			
 			if (myport instanceof Httpcode.MyJMSWS1) {
 				Httpcode.MyJMSWS1 port = (Httpcode.MyJMSWS1) myport;
 				String test = port.sayHello("test1");
+				result=test;
 				logger.log(Level.INFO, "test1 result: " + test);
 				test = port.sayHello2("test2");
+				result+=" " + test;
 				logger.log(Level.INFO, "test2 result: " + test);
 			} else {
 				logger.log(Level.INFO, "sorry port is not of any type");
@@ -86,15 +106,17 @@ public class callMyWS extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 
-	protected void processRequest(HttpServletRequest request,
+	protected String processJMSRequest(HttpServletRequest request,
 			HttpServletResponse response) { /*
 											 * https://docs.oracle.com/middleware
 											 * /
 											 * 1213/wls/WSGET/jax-ws-jmstransport
 											 * .htm#WSGET3619
 											 */
+		String result="failed";
 		try {
 			Jmscode.MyJMSWSService service = new Jmscode.MyJMSWSService();
 			JMSTransportClientFeature feature = JMSTransportClientFeature
@@ -108,8 +130,10 @@ public class callMyWS extends HttpServlet {
 				Jmscode.MyJMSWS1 port = (Jmscode.MyJMSWS1) service
 						.getMyJMSWSPort(new WebServiceFeature[] { feature });
 				String test = port.sayHello("test1");
+				result=test;
 				logger.log(Level.INFO, "test1 result: " + test);
 				test = port.sayHello2("test2");
+				result+=" " + test;
 				logger.log(Level.INFO, "test2 result: " + test);
 			} else {
 				logger.log(Level.INFO, "sorry port is not of any type");
@@ -118,6 +142,7 @@ public class callMyWS extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return result;
 	}
 
 }

@@ -16,7 +16,7 @@
 		<!-- http://localhost:7003/tcleyman_JMS_CLIENT-0.0.1-SNAPSHOT/callMyWS -->
 		<web-resource-collection>
 		  	<web-resource-name>MySecuredServlet</web-resource-name>
-			<url-pattern>/tcleyman_JMS_CLIENT-0.0.1-SNAPSHOT/*</url-pattern>
+			<url-pattern>/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>myrole</role-name>
