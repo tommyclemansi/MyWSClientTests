@@ -65,11 +65,11 @@ public class MyJMSWSService
     /**
      * 
      * @return
-     *     returns MyJMSWS
+     *     returns MyJMSWS1
      */
     @WebEndpoint(name = "MyJMSWSPort")
-    public MyJMSWS getMyJMSWSPort() {
-        return super.getPort(new QName("http://tcleyman/", "MyJMSWSPort"), MyJMSWS.class);
+    public MyJMSWS1 getMyJMSWSPort() {
+        return super.getPort(new QName("http://tcleyman/", "MyJMSWSPort"), MyJMSWS1.class);
     }
 
     /**
@@ -77,11 +77,11 @@ public class MyJMSWSService
      * @param features
      *     A list of {@link javax.xml.ws.WebServiceFeature} to configure on the proxy.  Supported features not in the <code>features</code> parameter will have their default values.
      * @return
-     *     returns MyJMSWS
+     *     returns MyJMSWS1
      */
     @WebEndpoint(name = "MyJMSWSPort")
-    public MyJMSWS getMyJMSWSPort(WebServiceFeature... features) {
-        return super.getPort(new QName("http://tcleyman/", "MyJMSWSPort"), MyJMSWS.class, features);
+    public MyJMSWS1 getMyJMSWSPort(WebServiceFeature... features) {
+        return super.getPort(new QName("http://tcleyman/", "MyJMSWSPort"), MyJMSWS1.class, features);
     }
 
     private static URL __getWsdlLocation() {

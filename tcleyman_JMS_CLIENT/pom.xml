@@ -136,7 +136,7 @@
 							<packageName>Jmscode</packageName>
 							<verbose>true</verbose>
 							<!-- when deployed this should be the default location -->
-							<wsdl>${wsdl_host}/MyJMSWS_JMS/MyJMSWS?WSDL</wsdl>
+							<wsdl>${wsdl_host}/MyJMSWS_JMS/MyJMSWSService?WSDL</wsdl>
 						</configuration>
 					</execution>
 

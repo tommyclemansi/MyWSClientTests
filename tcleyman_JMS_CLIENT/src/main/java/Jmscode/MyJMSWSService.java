@@ -17,7 +17,7 @@ import javax.xml.ws.WebServiceFeature;
  * Generated source version: 2.2
  * 
  */
-@WebServiceClient(name = "MyJMSWSService", targetNamespace = "http://tcleyman/", wsdlLocation = "http://localhost:7001/MyJMSWS_JMS/MyJMSWS?WSDL")
+@WebServiceClient(name = "MyJMSWSService", targetNamespace = "http://tcleyman/", wsdlLocation = "http://localhost:7001/MyJMSWS_JMS/MyJMSWSService?WSDL")
 public class MyJMSWSService
     extends Service
 {
@@ -30,7 +30,7 @@ public class MyJMSWSService
         WebServiceException e = null;
         URL url = null;
         try {
-            url = new URL(Jmscode.MyJMSWSService.class.getResource("."), "http://localhost:7001/MyJMSWS_JMS/MyJMSWS?WSDL");
+            url = new URL(Jmscode.MyJMSWSService.class.getResource("."), "http://localhost:7001/MyJMSWS_JMS/MyJMSWSService?WSDL");
         } catch (MalformedURLException murl) {
             e = new WebServiceException(murl);
         }
@@ -65,11 +65,11 @@ public class MyJMSWSService
     /**
      * 
      * @return
-     *     returns MyJMSWS
+     *     returns MyJMSWS1
      */
     @WebEndpoint(name = "MyJMSWSPort")
-    public MyJMSWS getMyJMSWSPort() {
-        return super.getPort(new QName("http://tcleyman/", "MyJMSWSPort"), MyJMSWS.class);
+    public MyJMSWS1 getMyJMSWSPort() {
+        return super.getPort(new QName("http://tcleyman/", "MyJMSWSPort"), MyJMSWS1.class);
     }
 
     /**
@@ -77,11 +77,11 @@ public class MyJMSWSService
      * @param features
      *     A list of {@link javax.xml.ws.WebServiceFeature} to configure on the proxy.  Supported features not in the <code>features</code> parameter will have their default values.
      * @return
-     *     returns MyJMSWS
+     *     returns MyJMSWS1
      */
     @WebEndpoint(name = "MyJMSWSPort")
-    public MyJMSWS getMyJMSWSPort(WebServiceFeature... features) {
-        return super.getPort(new QName("http://tcleyman/", "MyJMSWSPort"), MyJMSWS.class, features);
+    public MyJMSWS1 getMyJMSWSPort(WebServiceFeature... features) {
+        return super.getPort(new QName("http://tcleyman/", "MyJMSWSPort"), MyJMSWS1.class, features);
     }
 
     private static URL __getWsdlLocation() {

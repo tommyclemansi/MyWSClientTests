@@ -17,11 +17,11 @@ import javax.xml.ws.ResponseWrapper;
  * Generated source version: 2.2
  * 
  */
-@WebService(name = "MyJMSWS", targetNamespace = "http://tcleyman/")
+@WebService(name = "MyJMSWS1", targetNamespace = "http://tcleyman/")
 @XmlSeeAlso({
     ObjectFactory.class
 })
-public interface MyJMSWS {
+public interface MyJMSWS1 {
 
 
     /**
@@ -34,7 +34,7 @@ public interface MyJMSWS {
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "sayHello", targetNamespace = "http://tcleyman/", className = "Jmscode.SayHello")
     @ResponseWrapper(localName = "sayHelloResponse", targetNamespace = "http://tcleyman/", className = "Jmscode.SayHelloResponse")
-    @Action(input = "http://tcleyman/MyJMSWS/sayHelloRequest", output = "http://tcleyman/MyJMSWS/sayHelloResponse")
+    @Action(input = "http://tcleyman/MyJMSWS1/sayHelloRequest", output = "http://tcleyman/MyJMSWS1/sayHelloResponse")
     public String sayHello(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
@@ -49,7 +49,7 @@ public interface MyJMSWS {
     @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "sayHello2", targetNamespace = "http://tcleyman/", className = "Jmscode.SayHello2")
     @ResponseWrapper(localName = "sayHello2Response", targetNamespace = "http://tcleyman/", className = "Jmscode.SayHello2Response")
-    @Action(input = "http://tcleyman/MyJMSWS/sayHello2Request", output = "http://tcleyman/MyJMSWS/sayHello2Response")
+    @Action(input = "http://tcleyman/MyJMSWS1/sayHello2Request", output = "http://tcleyman/MyJMSWS1/sayHello2Response")
     public String sayHello2(
         @WebParam(name = "arg0", targetNamespace = "")
         String arg0);
