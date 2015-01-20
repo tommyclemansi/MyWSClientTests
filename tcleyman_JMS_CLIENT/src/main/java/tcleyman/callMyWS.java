@@ -100,7 +100,19 @@ public class callMyWS extends HttpServlet {
 				test = port.sayHello2("test2");
 				result+=" " + test;
 				logger.log(Level.INFO, "test2 result: " + test);
-			} else {
+			} 
+			else if  (myport instanceof Httpcode.MyJMSWS)
+			{
+				Httpcode.MyJMSWS port = (Httpcode.MyJMSWS) myport;
+				String test = port.sayHello("test1");
+				result=test;
+				logger.log(Level.INFO, "test1 result: " + test);
+				test = port.sayHello2("test2");
+				result+=" " + test;
+				logger.log(Level.INFO, "test2 result: " + test);
+			}
+			
+			else {
 				logger.log(Level.INFO, "sorry port is not of any type");
 			}
 		} catch (Exception e) {
@@ -135,7 +147,18 @@ public class callMyWS extends HttpServlet {
 				test = port.sayHello2("test2");
 				result+=" " + test;
 				logger.log(Level.INFO, "test2 result: " + test);
-			} else {
+			} 
+			else if  (myport instanceof Jmscode.MyJMSWS)
+			{
+				Jmscode.MyJMSWS port = (Jmscode.MyJMSWS) myport;
+				String test = port.sayHello("test1");
+				result=test;
+				logger.log(Level.INFO, "test1 result: " + test);
+				test = port.sayHello2("test2");
+				result+=" " + test;
+				logger.log(Level.INFO, "test2 result: " + test);
+			}
+			else {
 				logger.log(Level.INFO, "sorry port is not of any type");
 			}
 
